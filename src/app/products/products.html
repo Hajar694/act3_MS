@@ -1,0 +1,204 @@
+
+<div class="container mt-4">
+
+  <!-- Titre -->
+  <h2 class="text-primary mb-4">
+    <i class="bi bi-box-seam"></i>
+    Gestion des Produits
+  </h2>
+
+  <!-- Formulaire d'ajout -->
+  <div class="card shadow-sm mb-4">
+
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">Ajouter un produit</h5>
+    </div>
+
+    <div class="card-body">
+
+      <form (ngSubmit)="addProduct()" #productForm="ngForm">
+
+        <div class="mb-3">
+          <label class="form-label">Nom du produit</label>
+
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            [(ngModel)]="newProduct.name"
+            placeholder="Entrer le nom du produit"
+            required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Prix</label>
+
+          <input
+            type="number"
+            class="form-control"
+            name="price"
+            [(ngModel)]="newProduct.price"
+            placeholder="Entrer le prix"
+            min="0"
+            required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Quantity</label>
+
+          <input
+            type="number"
+            class="form-control"
+            name="quantity"
+            [(ngModel)]="newProduct.quantity"
+            placeholder="Entrer la quantity"
+            min="0"
+            required>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-success"
+          [disabled]="productForm.invalid">
+
+          <i class="bi bi-plus-circle"></i>
+          Ajouter le produit
+
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Barre de recherche -->
+  <div class="card shadow-sm mb-4">
+
+    <div class="card-body">
+
+      <label class="form-label fw-bold">
+        Rechercher un produit
+      </label>
+
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Rechercher par nom..."
+        [(ngModel)]="searchTerm"
+        name="search">
+
+    </div>
+
+  </div>
+
+  <!-- Liste des produits -->
+  <div class="card shadow-sm">
+
+    <div class="card-header bg-primary text-white">
+
+      <h5 class="mb-0">
+        Liste des Produits
+      </h5>
+
+    </div>
+
+    <div class="card-body">
+
+      @if (products.length > 0) {
+
+      <table class="table table-hover align-middle">
+
+        <thead class="table-light">
+
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Prix</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        @for (p of filteredProducts; track p.id) {
+
+        <tr>
+
+          <td>{{ p.id }}</td>
+
+          <td>{{ p.name }}</td>
+
+          <td>{{ p.price | currency:'EUR' }}</td>
+
+          <!-- Toggle Selection -->
+          <td>
+
+            @if (p.selected) {
+
+            <button
+              class="btn btn-success btn-sm"
+              (click)="toggleSelection(p)">
+
+              <i class="bi bi-check-circle-fill"></i>
+              Sélectionné
+
+            </button>
+
+            } @else {
+
+            <button
+              class="btn btn-secondary btn-sm"
+              (click)="toggleSelection(p)">
+
+              <i class="bi bi-circle"></i>
+              Non sélectionné
+
+            </button>
+
+            }
+
+          </td>
+
+          <!-- Supprimer -->
+          <td>
+
+            <button
+              class="btn btn-outline-danger btn-sm"
+              (click)="handleDelete(p)">
+
+              <i class="bi bi-trash"></i>
+              Supprimer
+
+            </button>
+
+          </td>
+
+        </tr>
+
+        }
+
+        </tbody>
+
+      </table>
+
+      @if (filteredProducts.length === 0) {
+
+      <div class="alert alert-warning">
+        Aucun produit trouvé !
+      </div>
+
+      }
+
+      } @else {
+
+      <div class="alert alert-info">
+        Aucun produit disponible.
+      </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</div>
